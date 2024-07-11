@@ -1,9 +1,5 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 :root {
-  font-family: "JetBrains Mono", sans-serif;
+  font-family: "JetBrains Mono", monospace;
   line-height: 1.5;
   font-weight: 400;
 
@@ -15,4 +11,8 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+h1 {
+  font-family: "Cal Sans", sans-serif;
 }
