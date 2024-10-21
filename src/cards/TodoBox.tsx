@@ -1,5 +1,11 @@
 import { useEffect, useState } from "react";
 import Card from "../components/Card";
+import {
+  DragDropContext,
+  Droppable,
+  Draggable,
+  DropResult,
+} from "react-beautiful-dnd";
 
 export default function TodoBox() {
   const [tasks, setTasks] = useState<
@@ -35,32 +41,76 @@ export default function TodoBox() {
     }
   };
 
+  const handleDragEnd = (result: DropResult) => {
+    if (!result.destination) return;
+
+    const items = Array.from(tasks);
+    const [reorderedItem] = items.splice(result.source.index, 1);
+    items.splice(result.destination.index, 0, reorderedItem);
+
+    setTasks(items);
+  };
+
   return (
     <div className="w-full h-full row-span-5 col-span-2">
       <Card title=".tasks">
         <div className="flex flex-col h-full">
-          <div className="flex-grow overflow-auto p-1">
-            {tasks.map((task) => (
-              <div
-                key={task.id}
-                className="px-2 py-0.5 flex content-center items-center space-x-2 hover:bg-white hover:text-black cursor-pointer"
-                onClick={() => {
-                  setTasks((prev) =>
-                    prev.map((t) =>
-                      t.id === task.id ? { ...t, done: !t.done } : t
-                    )
-                  );
-                }}
-                onContextMenu={(e) => {
-                  e.preventDefault();
-                  handleDelete(task.id);
-                }}
-              >
-                <input type="checkbox" checked={task.done} readOnly />
-                <span>{task.title}</span>
-              </div>
-            ))}
-          </div>
+          <DragDropContext onDragEnd={handleDragEnd}>
+            <Droppable droppableId="tasks">
+              {(provided) => (
+                <div
+                  {...provided.droppableProps}
+                  ref={provided.innerRef}
+                  className="flex-grow overflow-auto p-1"
+                >
+                  {tasks.map((task, index) => (
+                    <Draggable
+                      key={task.id}
+                      draggableId={task.id.toString()}
+                      index={index}
+                    >
+                      {(provided) => (
+                        <div
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                          className={`px-2 py-0.5 flex content-center items-center space-x-2 hover:bg-white hover:text-black cursor-pointer`}
+                          onClick={() => {
+                            setTasks((prev) =>
+                              prev.map((t) =>
+                                t.id === task.id ? { ...t, done: !t.done } : t
+                              )
+                            );
+                          }}
+                          onContextMenu={(e) => {
+                            e.preventDefault();
+                            handleDelete(task.id);
+                          }}
+                        >
+                          <input type="checkbox" checked={task.done} readOnly />
+                          <span>
+                            {task.title.split(/([\w]+:)/i).map((part, index) =>
+                              part.match(/^[\w]+:/i) ? (
+                                <span
+                                  key={index}
+                                  className="bg-white text-black"
+                                >
+                                  {part}
+                                </span>
+                              ) : (
+                                <span key={index}>{part}</span>
+                              )
+                            )}
+                          </span>
+                        </div>
+                      )}
+                    </Draggable>
+                  ))}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          </DragDropContext>
           <form onSubmit={handleAddTask} className="bg-black">
             <input
               id="newTaskInput"
