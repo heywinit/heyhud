@@ -67,8 +67,8 @@ function App() {
         <div></div>
         <div></div>
         <div></div>
-        <div className=" flex justify-center items-center col-span-2 border text-7xl select-none font-semibold">
-          HUDv2
+        <div className="flex justify-center items-center col-span-2 border text-7xl select-none font-semibold">
+          HUD<span className="text-p">v</span>2
         </div>
         <div></div>
         <div></div>
