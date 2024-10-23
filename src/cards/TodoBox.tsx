@@ -74,7 +74,7 @@ export default function TodoBox() {
                           ref={provided.innerRef}
                           {...provided.draggableProps}
                           {...provided.dragHandleProps}
-                          className={`px-2 py-0.5 flex content-center items-center space-x-2 hover:bg-white hover:text-black cursor-pointer`}
+                          className={`px-2 py-0.5 flex content-center items-center space-x-2 hover:bg-p hover:text-white cursor-pointer`}
                           onClick={() => {
                             setTasks((prev) =>
                               prev.map((t) =>
@@ -93,9 +93,10 @@ export default function TodoBox() {
                               part.match(/^[\w]+:/i) ? (
                                 <span
                                   key={index}
-                                  className="bg-white text-black"
+                                  className="bg-p text-white px-0.5 font-medium"
+                                  style={{ textShadow: "0 0 16px #fff" }}
                                 >
-                                  {part}
+                                  {part.replace(":", "")}
                                 </span>
                               ) : (
                                 <span key={index}>{part}</span>
