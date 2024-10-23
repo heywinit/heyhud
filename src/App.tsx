@@ -1,9 +1,12 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import TimeBox from "./cards/TimeBox";
 import TodoBox from "./cards/TodoBox";
 import LyricBox from "./cards/LyricBox";
+import ImportDialog from "./components/ImportDialog";
 
 function App() {
+  const [isImportDialogOpen, setIsImportDialogOpen] = useState(false);
+
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
       if (
@@ -13,7 +16,7 @@ function App() {
       ) {
         return;
       }
-      
+
       if (event.key === "t") {
         const newTaskInput = document.getElementById("newTaskInput");
         if (newTaskInput) {
@@ -22,6 +25,9 @@ function App() {
             event.preventDefault();
           }
         }
+      } else if (event.key === "i") {
+        setIsImportDialogOpen(true);
+        event.preventDefault();
       }
     };
 
@@ -31,6 +37,22 @@ function App() {
       window.removeEventListener("keydown", handleKeyPress);
     };
   }, []);
+
+  const handleImport = (lyrics: string, tasks: string) => {
+    try {
+      const parsedLyrics = JSON.parse(lyrics);
+      const parsedTasks = JSON.parse(tasks);
+
+      localStorage.setItem("lyrics", JSON.stringify(parsedLyrics));
+      localStorage.setItem("tasks", JSON.stringify(parsedTasks));
+
+      // You might want to update the state of your LyricBox and TodoBox components here
+      // or trigger a re-render to fetch the new data from localStorage
+    } catch (error) {
+      console.error("Error parsing JSON:", error);
+      alert("Error parsing JSON. Please check your input and try again.");
+    }
+  };
 
   return (
     <div className="w-screen h-screen grid grid-rows-2 grid-cols-2 p-2">
@@ -57,6 +79,11 @@ function App() {
         <TodoBox />
       </div>
       <div></div>
+      <ImportDialog
+        isOpen={isImportDialogOpen}
+        onClose={() => setIsImportDialogOpen(false)}
+        onImport={handleImport}
+      />
     </div>
   );
 }
