@@ -1,3 +1,3 @@
-# heytab
+# heyhud
 
-Routine management add-on for Firefox
+a hud, for winit.
