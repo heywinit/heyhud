@@ -6,6 +6,14 @@ import LyricBox from "./cards/LyricBox";
 function App() {
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
+      if (
+        document.activeElement instanceof HTMLInputElement ||
+        document.activeElement instanceof HTMLTextAreaElement ||
+        document.activeElement?.getAttribute("contenteditable") === "true"
+      ) {
+        return;
+      }
+      
       if (event.key === "t") {
         const newTaskInput = document.getElementById("newTaskInput");
         if (newTaskInput) {
