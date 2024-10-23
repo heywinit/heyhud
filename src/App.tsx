@@ -45,9 +45,6 @@ function App() {
 
       localStorage.setItem("lyrics", JSON.stringify(parsedLyrics));
       localStorage.setItem("tasks", JSON.stringify(parsedTasks));
-
-      // You might want to update the state of your LyricBox and TodoBox components here
-      // or trigger a re-render to fetch the new data from localStorage
     } catch (error) {
       console.error("Error parsing JSON:", error);
       alert("Error parsing JSON. Please check your input and try again.");

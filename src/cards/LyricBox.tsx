@@ -101,6 +101,7 @@ export default function LyricBox() {
           <div className="p-2 space-x-2">
             {(() => {
               const { lyric, artist, song } = getRandomLyric();
+              if (!lyric || !artist) return null;
               return (
                 <>
                   <span className="text-md font-bold">{lyric}</span> -
