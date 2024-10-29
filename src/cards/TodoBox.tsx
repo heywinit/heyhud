@@ -61,7 +61,7 @@ export default function TodoBox() {
                 <div
                   {...provided.droppableProps}
                   ref={provided.innerRef}
-                  className="flex-grow overflow-auto p-1"
+                  className="flex-grow overflow-auto p-1 leading-tight"
                 >
                   {tasks.map((task, index) => (
                     <Draggable
